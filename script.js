@@ -3,6 +3,11 @@ const USERNAME = 'whocvt';
 const API_BASE = 'https://ws.audioscrobbler.com/2.0/';
 const CUSTOM_AVATAR = './avatar.jpg';
 
+let allTracks = [];
+let filteredTracks = [];
+let currentPage = 1;
+const tracksPerPage = 20;
+
 
 const elements = {
     userAvatar: document.getElementById('userAvatar'),
@@ -21,7 +26,19 @@ const elements = {
     refreshBtn: document.getElementById('refreshBtn'),
     playingAnimation: document.getElementById('playingAnimation'),
     albumArtGlow: document.querySelector('.album-art-glow'),
-    nowPlaying: document.getElementById('nowPlaying')
+    nowPlaying: document.getElementById('nowPlaying'),
+    showAllBtn: document.getElementById('showAllBtn'),
+    tracksModal: document.getElementById('tracksModal'),
+    modalClose: document.getElementById('modalClose'),
+    trackSearch: document.getElementById('trackSearch'),
+    searchBtn: document.getElementById('searchBtn'),
+    allTracksContainer: document.getElementById('allTracksContainer'),
+    loadingSpinner: document.querySelector('.loading-spinner'),
+    prevPage: document.getElementById('prevPage'),
+    nextPage: document.getElementById('nextPage'),
+    pageInfo: document.getElementById('pageInfo'),
+    updateNotification: document.getElementById('updateNotification'),
+    notificationClose: document.getElementById('notificationClose'),
 };
 
 function formatNumber(num) {
@@ -42,8 +59,21 @@ function getTimeAgo(timestamp) {
     return Math.floor(diff / 604800) + ' нед назад';
 }
 
+function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+}
+
+
+
+
+
+
+
+
 function setAlbumArtGlow(imageUrl) {
-    if (imageUrl && imageUrl !== 'https://via.placeholder.com/300?text=No+Track') {
+    if (imageUrl && imageUrl !== 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaD0iMzAwIiB2aWV3Qm94PSIwIDAgMzAwIDMwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMzMzMzMzMiLz4KPHN2ZyB3aWR0aD0iMTAwIiBoZWlnaD0iMTAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeD0iMTAwIiB5PSIxMDAiPgo8cGF0aCBkPSJNOCA1VjE5TDE5IDEyTDggNVoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K') {
         elements.albumArtGlow.style.backgroundImage = `url(${imageUrl})`;
         elements.albumArtGlow.style.opacity = '0.5';
     } else {
@@ -140,11 +170,12 @@ async function getRecentTracks() {
 }
 
 async function updateCurrentTrack(track, isNowPlaying) {
+    
     elements.trackName.textContent = track.name || '-';
     elements.artistName.textContent = track.artist['#text'] || track.artist.name || '-';
     elements.albumName.textContent = track.album['#text'] || '-';
     
-    let albumArtUrl = 'https://via.placeholder.com/300?text=No+Track';
+    let albumArtUrl = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaD0iMzAwIiB2aWV3Qm94PSIwIDAgMzAwIDMwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMzMzMzMzMiLz4KPHN2ZyB3aWR0aD0iMTAwIiBoZWlnaD0iMTAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeD0iMTAwIiB5PSIxMDAiPgo8cGF0aCBkPSJNOCA1VjE5TDE5IDEyTDggNVoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K';
     if (track.image && track.image.length > 0) {
         const largeImage = track.image[track.image.length - 1]['#text'];
         if (largeImage) albumArtUrl = largeImage;
@@ -155,10 +186,12 @@ async function updateCurrentTrack(track, isNowPlaying) {
     if (isNowPlaying) {
         elements.statusText.textContent = 'Сейчас играет';
         elements.playingAnimation.classList.add('active');
+        document.querySelector('.status-dot').classList.remove('inactive');
     } else {
         const timestamp = track.date ? parseInt(track.date.uts) : Math.floor(Date.now() / 1000);
         elements.statusText.textContent = getTimeAgo(timestamp);
         elements.playingAnimation.classList.remove('active');
+        document.querySelector('.status-dot').classList.add('inactive');
     }
     
     await getTrackInfo(track.name, track.artist['#text'] || track.artist.name);
@@ -192,7 +225,7 @@ function updateRecentTracksList(tracks) {
         const trackItem = document.createElement('div');
         trackItem.className = 'track-item';
         
-        let albumArtUrl = 'https://via.placeholder.com/50?text=?';
+        let albumArtUrl = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjMzMzMzMzIi8+Cjxzdmcgd2lkdGg9IjIwIiBoZWlnaHQ9IjIwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeD0iMTUiIHk9IjE1Ij4KPHBhdGggZD0iTTggNVYxOUwxOSAxMkw4IDVaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4KPC9zdmc+Cg==';
         if (track.image && track.image.length > 0) {
             const mediumImage = track.image[1]['#text'];
             if (mediumImage) albumArtUrl = mediumImage;
@@ -250,9 +283,214 @@ function startAutoRefresh() {
     }, 10000);
 }
 
+async function fetchAllTracks() {
+    try {
+        if (elements.loadingSpinner) {
+            elements.loadingSpinner.style.display = 'flex';
+        }
+        allTracks = [];
+        let page = 1;
+        let totalPages = 1;
+        
+        do {
+            const response = await fetch(`${API_BASE}?method=user.getrecenttracks&user=${USERNAME}&api_key=${API_KEY}&format=json&page=${page}&limit=200`);
+            const data = await response.json();
+            
+            if (data.recenttracks && data.recenttracks.track) {
+                const tracks = Array.isArray(data.recenttracks.track) ? data.recenttracks.track : [data.recenttracks.track];
+                allTracks = allTracks.concat(tracks);
+                totalPages = parseInt(data.recenttracks['@attr'].totalPages);
+                page++;
+            } else {
+                break;
+            }
+        } while (page <= totalPages && page <= 3);
+        
+        filteredTracks = [...allTracks];
+        displayTracks();
+        updatePagination();
+    } catch (error) {
+        console.error('Error fetching all tracks:', error);
+        if (elements.allTracksContainer) {
+            elements.allTracksContainer.innerHTML = '<div class="error-message">Ошибка загрузки треков</div>';
+        }
+    } finally {
+        if (elements.loadingSpinner) {
+            elements.loadingSpinner.style.display = 'none';
+        }
+    }
+}
+
+function displayTracks() {
+    if (!elements.allTracksContainer) return;
+    
+    const startIndex = (currentPage - 1) * tracksPerPage;
+    const endIndex = startIndex + tracksPerPage;
+    const tracksToShow = filteredTracks.slice(startIndex, endIndex);
+    
+    elements.allTracksContainer.innerHTML = '';
+    
+    tracksToShow.forEach(track => {
+        const trackElement = createTrackElement(track);
+        elements.allTracksContainer.appendChild(trackElement);
+    });
+}
+
+function createTrackElement(track) {
+    const trackDiv = document.createElement('div');
+    trackDiv.className = 'modal-track-item';
+    
+    const imageUrl = track.image && track.image[2] ? track.image[2]['#text'] : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiBmaWxsPSIjMzMzMzMzIi8+CjxwYXRoIGQ9Ik0yMCAyMEg0MFY0MEgyMFYyMFoiIGZpbGw9IiM2NjY2NjYiLz4KPHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4PSIyMCIgeT0iMjAiPgo8cGF0aCBkPSJNOCA1VjE5TDE5IDEyTDggNVoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K';
+    
+    const timeAgo = track['@attr'] && track['@attr'].nowplaying ? 'Сейчас играет' : (track.date ? getTimeAgo(parseInt(track.date.uts)) : '');
+    
+    trackDiv.innerHTML = `
+        <img src="${imageUrl}" alt="Album Art" class="modal-track-item-art" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjYwIiBoZWlnaHQ9IjYwIiBmaWxsPSIjMzMzMzMzIi8+CjxwYXRoIGQ9Ik0yMCAyMEg0MFY0MEgyMFYyMFoiIGZpbGw9IiM2NjY2NjYiLz4KPHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4PSIyMCIgeT0iMjAiPgo8cGF0aCBkPSJNOCA1VjE5TDE5IDEyTDggNVoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K'">
+        <div class="modal-track-item-info">
+            <div class="modal-track-item-name">${track.name || 'Неизвестный трек'}</div>
+            <div class="modal-track-item-artist">${track.artist['#text'] || 'Неизвестный исполнитель'}</div>
+        </div>
+        <div class="modal-track-item-time">${timeAgo}</div>
+    `;
+    
+    return trackDiv;
+}
+
+function updatePagination() {
+    if (!elements.pageInfo || !elements.prevPage || !elements.nextPage) return;
+    
+    const totalPages = Math.ceil(filteredTracks.length / tracksPerPage);
+    elements.pageInfo.textContent = `Страница ${currentPage} из ${totalPages}`;
+    elements.prevPage.disabled = currentPage === 1;
+    elements.nextPage.disabled = currentPage === totalPages || totalPages === 0;
+}
+
+function searchTracks() {
+    if (!elements.trackSearch) return;
+    
+    const searchTerm = elements.trackSearch.value.toLowerCase().trim();
+    
+    if (searchTerm === '') {
+        filteredTracks = [...allTracks];
+    } else {
+        filteredTracks = allTracks.filter(track => {
+            const trackName = (track.name || '').toLowerCase();
+            const artistName = (track.artist['#text'] || '').toLowerCase();
+            return trackName.includes(searchTerm) || artistName.includes(searchTerm);
+        });
+    }
+    
+    currentPage = 1;
+    displayTracks();
+    updatePagination();
+}
+
+function openModal() {
+    if (!elements.tracksModal) return;
+    
+    elements.tracksModal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    fetchAllTracks();
+}
+
+function closeModal() {
+    if (!elements.tracksModal) return;
+    
+    elements.tracksModal.classList.remove('active');
+    document.body.style.overflow = '';
+    if (elements.trackSearch) {
+        elements.trackSearch.value = '';
+    }
+}
+
+function setupModalEventListeners() {
+    if (elements.showAllBtn) {
+        elements.showAllBtn.addEventListener('click', openModal);
+    }
+    if (elements.modalClose) {
+        elements.modalClose.addEventListener('click', closeModal);
+    }
+    if (elements.tracksModal) {
+        elements.tracksModal.addEventListener('click', (e) => {
+            if (e.target === elements.tracksModal) {
+                closeModal();
+            }
+        });
+    }
+    if (elements.searchBtn) {
+        elements.searchBtn.addEventListener('click', searchTracks);
+    }
+    if (elements.trackSearch) {
+        elements.trackSearch.addEventListener('input', searchTracks);
+        elements.trackSearch.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                searchTracks();
+            }
+        });
+    }
+    if (elements.prevPage) {
+        elements.prevPage.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                displayTracks();
+                updatePagination();
+            }
+        });
+    }
+    if (elements.nextPage) {
+        elements.nextPage.addEventListener('click', () => {
+            const totalPages = Math.ceil(filteredTracks.length / tracksPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayTracks();
+                updatePagination();
+            }
+        });
+    }
+}
+
+function showUpdateNotification() {
+    const notificationShown = localStorage.getItem('updateNotificationShown');
+    const currentVersion = '1.2.0';
+    const savedVersion = localStorage.getItem('siteVersion');
+    
+    if (!notificationShown || savedVersion !== currentVersion) {
+        if (elements.updateNotification) {
+            setTimeout(() => {
+                elements.updateNotification.classList.add('show');
+            }, 1000);
+            
+            localStorage.setItem('updateNotificationShown', 'true');
+            localStorage.setItem('siteVersion', currentVersion);
+        }
+    }
+}
+
+function hideUpdateNotification() {
+    if (elements.updateNotification) {
+        elements.updateNotification.classList.remove('show');
+    }
+}
+
+function setupNotificationEventListeners() {
+    if (elements.notificationClose) {
+        elements.notificationClose.addEventListener('click', hideUpdateNotification);
+    }
+    
+    if (elements.updateNotification) {
+        elements.updateNotification.addEventListener('click', (e) => {
+            if (e.target === elements.updateNotification) {
+                hideUpdateNotification();
+            }
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     loadAllData();
     setupRefreshButton();
     startAutoRefresh();
+    setupModalEventListeners();
+    setupNotificationEventListeners();
+    showUpdateNotification();
 });
-
