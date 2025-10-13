@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>.kdev.world - fm.</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,7 +42,7 @@
             <div class="now-playing" id="nowPlaying">
                 <div class="album-art-container">
                     <div class="album-art-glow"></div>
-                    <img id="albumArt" src="https://via.placeholder.com/300?text=No+Track" alt="Album Art" class="album-art">
+                    <img id="albumArt" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaD0iMzAwIiB2aWV3Qm94PSIwIDAgMzAwIDMwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzMDAiIGZpbGw9IiMzMzMzMzMiLz4KPHN2ZyB3aWR0aD0iMTAwIiBoZWlnaD0iMTAwIiB2aWV3Qm94PSIwIDAgMjQgMjQiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeD0iMTAwIiB5PSIxMDAiPgo8cGF0aCBkPSJNOCA1VjE5TDE5IDEyTDggNVoiIGZpbGw9IndoaXRlIi8+Cjwvc3ZnPgo8L3N2Zz4K" alt="Album Art" class="album-art">
                     <div class="playing-animation" id="playingAnimation">
                         <span></span>
                         <span></span>
@@ -86,8 +86,14 @@
                 </div>
             </div>
 
+        </div>
+
+        <div class="recent-tracks-card glass">
             <div class="recent-tracks">
-                <h3 class="section-title">Недавние треки</h3>
+                <div class="recent-tracks-header">
+                    <h3 class="section-title">Недавние треки</h3>
+                    <button class="show-all-btn" id="showAllBtn">Показать все</button>
+                </div>
                 <div class="tracks-list" id="recentTracks">
                 </div>
             </div>
@@ -98,8 +104,58 @@
         </footer>
     </div>
 
+    <div class="modal-overlay" id="tracksModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Все треки</h2>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="search-container">
+                    <input type="text" class="search-input" id="trackSearch" placeholder="Поиск треков...">
+                    <button class="search-btn" id="searchBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="tracks-container" id="allTracksContainer">
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                        <p>Загрузка треков...</p>
+                    </div>
+                </div>
+                <div class="pagination">
+                    <button class="page-btn" id="prevPage">Назад</button>
+                    <span class="page-info" id="pageInfo">Страница 1</span>
+                    <button class="page-btn" id="nextPage">Вперед</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="updateNotification">
+        <div class="notification-content">
+            <div class="notification-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M9 12l2 2 4-4"></path>
+                    <circle cx="12" cy="12" r="10"></circle>
+                </svg>
+            </div>
+            <div class="notification-text">
+                <div class="notification-title">Сайт обновлен</div>
+                <div class="notification-subtitle">Добавлен показ всех треков. Исправлены мелкие штрихи сайта.</div>
+            </div>
+            <button class="notification-close" id="notificationClose">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
-
-
