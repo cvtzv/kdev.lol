@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy - kdev.lol</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .policy-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .policy-card {
+            padding: 40px;
+        }
+        .policy-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--glass-border);
+        }
+        .policy-header h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, var(--accent-secondary), var(--accent-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .policy-header .updated {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+        .policy-content h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent-primary);
+            margin: 32px 0 16px 0;
+        }
+        .policy-content h2:first-child {
+            margin-top: 0;
+        }
+        .policy-content p {
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+        .policy-content ul {
+            margin: 12px 0 16px 24px;
+            color: var(--text-secondary);
+        }
+        .policy-content li {
+            margin-bottom: 8px;
+            line-height: 1.6;
+        }
+        .policy-content a {
+            color: var(--accent-primary);
+            text-decoration: none;
+        }
+        .policy-content a:hover {
+            text-decoration: underline;
+        }
+        .policy-content code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 13px;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-top: 32px;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        @media (max-width: 768px) {
+            .policy-card {
+                padding: 24px 20px;
+            }
+            .policy-header h1 {
+                font-size: 24px;
+            }
+            .policy-content h2 {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background">
+        <div class="gradient-orb orb-1"></div>
+        <div class="gradient-orb orb-2"></div>
+        <div class="gradient-orb orb-3"></div>
+    </div>
+
+    <div class="policy-container">
+        <div class="policy-card glass">
+            <div class="policy-header">
+                <h1>Privacy Policy</h1>
+                <p class="updated">Last updated: January 2026</p>
+            </div>
+            
+            <div class="policy-content">
+                <h2>1. Introduction</h2>
+                <p>This Privacy Policy describes how Telegram Gmail Bot ("we", "our", or "the Service") collects, uses, and protects your information when you use our Telegram bot to access your Gmail account.</p>
+                
+                <h2>2. Information We Collect</h2>
+                <p><strong>Google Account Information:</strong></p>
+                <ul>
+                    <li>Email address associated with your Google account</li>
+                    <li>OAuth tokens (access and refresh tokens) for Gmail API access</li>
+                </ul>
+                <p><strong>Telegram Information:</strong></p>
+                <ul>
+                    <li>Telegram user ID</li>
+                    <li>Telegram username (if available)</li>
+                    <li>First and last name (if available)</li>
+                    <li>Language preference</li>
+                </ul>
+                <p><strong>Email Data:</strong></p>
+                <ul>
+                    <li>We access your emails in read-only mode</li>
+                    <li>Email content is processed temporarily to display in Telegram</li>
+                    <li>We do not store email content permanently</li>
+                </ul>
+                
+                <h2>3. How We Use Your Information</h2>
+                <p>We use the collected information to:</p>
+                <ul>
+                    <li>Authenticate you with Google Gmail API</li>
+                    <li>Display your emails within Telegram</li>
+                    <li>Detect and highlight verification codes (2FA)</li>
+                    <li>Send notifications about new emails (if enabled)</li>
+                </ul>
+                
+                <h2>4. Data Storage and Security</h2>
+                <p><strong>Token Storage:</strong></p>
+                <ul>
+                    <li>OAuth tokens are encrypted using industry-standard encryption (Fernet/AES)</li>
+                    <li>Tokens are stored in a secure database</li>
+                    <li>We never store your Google password</li>
+                </ul>
+                <p><strong>Email Content:</strong></p>
+                <ul>
+                    <li>Email content is fetched on-demand and displayed in Telegram</li>
+                    <li>We do not permanently store email content on our servers</li>
+                    <li>Email data is transmitted securely via HTTPS</li>
+                </ul>
+                
+                <h2>5. Data Sharing</h2>
+                <p>We do NOT:</p>
+                <ul>
+                    <li>Sell your personal information</li>
+                    <li>Share your data with third parties</li>
+                    <li>Use your data for advertising purposes</li>
+                    <li>Access your emails for any purpose other than displaying them to you</li>
+                </ul>
+                
+                <h2>6. Your Rights</h2>
+                <p>You have the right to:</p>
+                <ul>
+                    <li>Disconnect your Gmail account at any time via /settings command</li>
+                    <li>Request deletion of all your data</li>
+                    <li>Revoke access through <a href="https://myaccount.google.com/permissions" target="_blank">Google Account settings</a></li>
+                </ul>
+                
+                <h2>7. Data Retention</h2>
+                <ul>
+                    <li>Your OAuth tokens are stored until you disconnect your account</li>
+                    <li>When you disconnect an account, all associated tokens are deleted</li>
+                    <li>Telegram user data is retained while you use the service</li>
+                </ul>
+                
+                <h2>8. Google API Services User Data Policy</h2>
+                <p>Our use of information received from Google APIs adheres to the Google API Services User Data Policy, including the Limited Use requirements.</p>
+                <p>We only request the minimum necessary scope:</p>
+                <ul>
+                    <li><code>gmail.readonly</code> - Read-only access to your emails</li>
+                </ul>
+                
+                <h2>9. Children's Privacy</h2>
+                <p>This Service is not intended for users under 13 years of age. We do not knowingly collect information from children under 13.</p>
+                
+                <h2>10. Changes to This Policy</h2>
+                <p>We may update this Privacy Policy from time to time. We will notify users of any material changes via the bot.</p>
+                
+                <h2>11. Contact</h2>
+                <p>If you have questions about this Privacy Policy, please contact us at: <a href="mailto:admin@kdev.lol">admin@kdev.lol</a></p>
+                
+                <h2>12. Consent</h2>
+                <p>By using this Service, you consent to the collection and use of your information as described in this Privacy Policy.</p>
+                
+                <a href="/" class="back-link">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Back to Home
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
