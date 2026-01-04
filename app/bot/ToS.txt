@@ -1,0 +1,116 @@
+TERMS OF SERVICE
+
+Last updated: January 2026
+
+1. ACCEPTANCE OF TERMS
+
+By accessing and using Telegram Gmail Bot ("the Service"), you agree to be bound 
+by these Terms of Service. If you do not agree to these terms, do not use the Service.
+
+2. DESCRIPTION OF SERVICE
+
+Telegram Gmail Bot is a Telegram bot that allows users to:
+- Connect their Gmail accounts via Google OAuth
+- View emails within Telegram interface
+- Receive notifications about new emails
+- Copy verification codes from emails
+
+3. ELIGIBILITY
+
+You must be at least 13 years old to use this Service.
+You must have a valid Google account to use Gmail features.
+
+4. USER ACCOUNTS
+
+4.1 Google Account Connection
+- You authorize us to access your Gmail in read-only mode
+- You can disconnect your account at any time
+- You are responsible for maintaining the security of your accounts
+
+4.2 Multiple Accounts
+- You may connect multiple Gmail accounts
+- Each account requires separate authorization
+
+5. ACCEPTABLE USE
+
+You agree NOT to:
+- Use the Service for any illegal purposes
+- Attempt to gain unauthorized access to the Service
+- Interfere with or disrupt the Service
+- Use the Service to spam or harass others
+- Reverse engineer or attempt to extract source code
+
+6. INTELLECTUAL PROPERTY
+
+The Service and its original content, features, and functionality are owned by 
+the Service operator and are protected by international copyright laws.
+
+7. LIMITATION OF LIABILITY
+
+7.1 The Service is provided "AS IS" without warranties of any kind.
+
+7.2 We are not liable for:
+- Any indirect, incidental, or consequential damages
+- Loss of data or unauthorized access to your data
+- Service interruptions or downtime
+- Actions of third parties (Google, Telegram)
+
+7.3 Our total liability shall not exceed the amount you paid for the Service 
+(which is zero for free services).
+
+8. DISCLAIMER
+
+8.1 We do not guarantee:
+- Uninterrupted or error-free service
+- That the Service will meet your requirements
+- The accuracy of email notifications
+
+8.2 Gmail API access is subject to Google's terms and availability.
+
+9. THIRD-PARTY SERVICES
+
+The Service relies on:
+- Google Gmail API (subject to Google's Terms of Service)
+- Telegram Bot API (subject to Telegram's Terms of Service)
+
+You agree to comply with the terms of these third-party services.
+
+10. TERMINATION
+
+10.1 You may stop using the Service at any time by:
+- Disconnecting your Gmail accounts via /settings
+- Blocking the bot in Telegram
+- Revoking access in Google Account settings
+
+10.2 We may terminate or suspend your access:
+- For violation of these Terms
+- For abuse of the Service
+- At our discretion with or without notice
+
+11. CHANGES TO TERMS
+
+We reserve the right to modify these Terms at any time. 
+Continued use of the Service after changes constitutes acceptance of new Terms.
+
+12. GOVERNING LAW
+
+These Terms shall be governed by and construed in accordance with applicable laws,
+without regard to conflict of law principles.
+
+13. SEVERABILITY
+
+If any provision of these Terms is found to be unenforceable, 
+the remaining provisions will continue in effect.
+
+14. CONTACT
+
+For questions about these Terms, please contact:
+admin@kdev.lol
+
+15. ENTIRE AGREEMENT
+
+These Terms constitute the entire agreement between you and the Service operator 
+regarding the use of the Service.
+
+By using Telegram Gmail Bot, you acknowledge that you have read, understood, 
+and agree to be bound by these Terms of Service.
